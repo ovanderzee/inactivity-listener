@@ -70,20 +70,25 @@
                 document.querySelector('#set2').style.display = ''
             }
             document.querySelector('[name=button1]').onclick = function () {
-                const time = Number(this.form.timeLimit.value)
+                const waitTime = Number(this.form.timeLimit.value)
                 const quote = this.form.logQuote.value
-                inactivityListener.start(time, () => show(quote))
+                inactivityListener.start(waitTime, () => show(quote))
                 document.querySelector('#hint1').style.display = ''
                 document.querySelector('#set2').style.display = 'none'
                 document.querySelector('#hint2').textContent = ''
             }
             document.querySelector('[name=button2]').onclick = function () {
-                const delay = inactivityListener.restart()
-                const delayMin = (delay / 1000).toFixed(1)
+                const inactivity = inactivityListener.restart()
+                const inactivitySecs = (inactivity / 1000).toFixed(1)
                 const hint2 = document.querySelector('#hint2')
-                hint2.textContent = `Responded ${delayMin} seconds after clicking start. Restarting the timer!`
                 hint2.style.display = ''
-                show("And the time ticks again...")
+                if (inactivity) {
+                  hint2.textContent = `Responded ${inactivitySecs} seconds after clicking start. Restarting the timer!`
+                  show("And the time ticks again...")
+                } else {
+                  hint2.textContent = `Restart not applicable when timer runs`
+                }
+
             }
             document.querySelector('#theLimit').textContent = document.querySelector('#timeLimit').value
 

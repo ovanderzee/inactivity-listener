@@ -4,8 +4,12 @@
 # Inactivity Listener
 
 Do something when a timespan of no interaction passes.
-Straightfoward; it sets a timeout that can be reset by internal eventListeners -
+Straightforward;
+It sets a timeout that can be reset by internal eventListeners -
 or through the public API.
+When time passes your callback is executed.
+A subsequent timeout can be set manually.
+The total inactive time can be obtained.
 
 ## Features
 
@@ -23,21 +27,22 @@ and an es-module in the module folder to import.
 Start listening:
 
 ```
-const config = {
-    events: <String>[],
-    timespan: <Number>,
-	callback: <Function>,
-}
-inactivityListener.start(config)
+inactivityListener.start(waitTime, callback)
 ```
 
-Reset timer:
+Reset timer when ticking:
 
 ```
 inactivityListener.reset()
 ```
 
-Stop listening:
+Resume listening after timeout, report inactivity:
+
+```
+let inactiveTime = inactivityListener.restart()
+```
+
+Stop listening, cancel timer:
 
 ```
 inactivityListener.destroy()
