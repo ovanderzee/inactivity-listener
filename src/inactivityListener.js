@@ -3,11 +3,11 @@ const inactivityListener = (function () {
     let timeLimit
     // to execute after timeLimit passed - Function
     let callback
-    // id for inactivity span - generated
+    // generated id for inactivity span - Number
     let timeoutId
     // timestamp of start or last activity - Date object
     let timeRoot
-    // to what events to listen
+    // to what events to listen - String[]
     let eventTypes = [
         'keydown',
         'keyup', // to be sure
@@ -23,7 +23,6 @@ const inactivityListener = (function () {
 
     /**
      * Calculate lapsed timeout
-     * @private
      * @return {Number} milliseconds after start
      */
     const elapsed = function () {
@@ -50,6 +49,7 @@ const inactivityListener = (function () {
      */
     const watch = function () {
         state = 'busy'
+        timeRoot = new Date()
         timeoutId = setTimeout(execute, timeLimit)
     }
 
@@ -70,7 +70,6 @@ const inactivityListener = (function () {
         // only when timeout is set
         if (state !== 'busy') return
         stop()
-        timeRoot = new Date()
         watch()
     }
 
@@ -81,7 +80,6 @@ const inactivityListener = (function () {
     const restart = function () {
         // not when untouched or timing
         if (state !== 'lapse') return
-        timeRoot = new Date()
         watch()
     }
 
@@ -120,7 +118,6 @@ const inactivityListener = (function () {
 
     /**
      * Cleanup for singe page apps
-     * @private
      */
     const destroy = function () {
         state = 'void'
