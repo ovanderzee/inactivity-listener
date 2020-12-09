@@ -24,10 +24,10 @@ and an es-module in the module folder to import.
 
 ## Usage
 
-Start listening:
+Start watching. Interval in milliseconds:
 
 ```
-inactivityListener.start(waitTime, callback)
+inactivityListener.start(interval, callback)
 ```
 
 Reset timer when ticking:
@@ -36,13 +36,19 @@ Reset timer when ticking:
 inactivityListener.reset()
 ```
 
-Resume listening after timeout, report inactivity:
+Report inactivity, in milliseconds:
 
 ```
-let inactiveTime = inactivityListener.restart()
+let inactiveTime = inactivityListener.lapse
 ```
 
-Stop listening, cancel timer:
+Resume listening after timeout:
+
+```
+inactivityListener.restart()
+```
+
+Remove listeners, clear timer:
 
 ```
 inactivityListener.destroy()

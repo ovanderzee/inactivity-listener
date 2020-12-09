@@ -18,13 +18,15 @@ const inactivityListener = (function() {
         'scroll',
         'wheel',
     ]
+    // void, busy, lapse
+    let state = 'void'
 
     /**
      * Calculate lapsed timeout
      * @private
      * @return {Number} milliseconds after start
      */
-    const timeLapse = function() {
+    const elapsed = function() {
         const past = new Date() - timeRoot
         return past
     }
@@ -34,15 +36,20 @@ const inactivityListener = (function() {
      * @private
      */
     const execute = function() {
-        timeoutId = undefined
-        callback()
+        state = 'lapse'
+        try {
+            callback()
+        } catch (error) {
+            console.error('faulty callback')
+        }
     }
 
     /**
      * Put up a new round of waiting
      * @private
      */
-    const wait = function() {
+    const watch = function() {
+        state = 'busy'
         timeoutId = setTimeout(execute, timeLimit)
     }
 
@@ -61,26 +68,21 @@ const inactivityListener = (function() {
      */
     const reset = function() {
         // only when timeout is set
-        if (!timeoutId) return
+        if (state !== 'busy') return
         stop()
         timeRoot = new Date()
-        wait()
+        watch()
     }
 
     /**
      * Start waiting with same timelimit and callback
      * Works when the timeout is completed
-     * @return {Number} milliseconds after start
      */
     const restart = function() {
-        // not when timeout is set
-        if (timeoutId) return
-        // not when functionality is untouched
-        if (!timeLimit || !callback) return
-        const past = timeLapse()
+        // not when untouched or timing
+        if (state !== 'lapse') return
         timeRoot = new Date()
-        wait()
-        return past
+        watch()
     }
 
     /**
@@ -113,7 +115,7 @@ const inactivityListener = (function() {
         timeLimit = waitTime
         callback = action
         eventHandling('add')
-        wait()
+        watch()
     }
 
     /**
@@ -121,6 +123,7 @@ const inactivityListener = (function() {
      * @private
      */
     const destroy = function() {
+        state = 'void'
         stop()
         eventHandling('remove')
     }
@@ -128,6 +131,9 @@ const inactivityListener = (function() {
     return {
         start: start,
         reset: reset,
+        get lapse() {
+            return elapsed()
+        },
         restart: restart,
         destroy: destroy,
     }

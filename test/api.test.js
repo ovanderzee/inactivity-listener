@@ -60,7 +60,7 @@ describe('The inactivityListener API', function() {
     })
 
     describe('reset method', function() {
-        test('reset should not work without start', () => {
+        test('reset should not work without starting', () => {
             // both start and reset call the timer, reset also clears the timer
             jest.useRealTimers()
             const spySetTimeout = jest.spyOn(window, 'setTimeout')
@@ -91,7 +91,7 @@ describe('The inactivityListener API', function() {
             jest.runAllTimers()
         })
 
-        test('reset should work with start', () => {
+        test('reset should work after start', () => {
             // both start and reset call the timer, reset also clears the timer
             jest.useRealTimers()
             const spySetTimeout = jest.spyOn(window, 'setTimeout')
@@ -109,7 +109,7 @@ describe('The inactivityListener API', function() {
     })
 
     describe('restart method', function() {
-        test('restart should not work without start', () => {
+        test('restart should not work without starting', () => {
             // both start and restart call the timer
             jest.useRealTimers()
             const spySetTimeout = jest.spyOn(window, 'setTimeout')
@@ -149,19 +149,19 @@ describe('The inactivityListener API', function() {
 
             jest.runAllTimers()
         })
+    })
 
-        test('restart should return a numeric timelapse', () => {
+    describe('lapse getter', function() {
+        test('lapse should return a numeric timelapse', () => {
             jest.useFakeTimers()
             inactivityListener.start(args.timeLimit, args.callback)
 
             jest.runAllTimers()
-            const timelapse = inactivityListener.restart()
+            const inactivity = inactivityListener.lapse
 
             // console.log('timelapse', timelapse) // 2 not args.timeLimit
 
-            expect(typeof timelapse).toBe('number')
-
-            jest.runAllTimers()
+            expect(typeof inactivity).toBe('number')
         })
     })
 
