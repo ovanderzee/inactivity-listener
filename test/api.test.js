@@ -1,12 +1,12 @@
 import { inactivityListener } from '../src/inactivityListener'
 
-describe('The inactivityListener API', function() {
+describe('The inactivityListener API', function () {
     let args
 
     beforeAll(() => {
         args = {
             timeLimit: 500,
-            callback: function() {
+            callback: function () {
                 console.log('Time is up!')
             },
         }
@@ -17,7 +17,7 @@ describe('The inactivityListener API', function() {
         jest.restoreAllMocks()
     })
 
-    describe('start method', function() {
+    describe('start method', function () {
         beforeAll(() => {
             // enable testing code with setTimeout
             jest.useFakeTimers()
@@ -59,7 +59,7 @@ describe('The inactivityListener API', function() {
         })
     })
 
-    describe('reset method', function() {
+    describe('reset method', function () {
         test('reset should not work without starting', () => {
             // both start and reset call the timer, reset also clears the timer
             jest.useRealTimers()
@@ -108,7 +108,7 @@ describe('The inactivityListener API', function() {
         })
     })
 
-    describe('restart method', function() {
+    describe('restart method', function () {
         test('restart should not work without starting', () => {
             // both start and restart call the timer
             jest.useRealTimers()
@@ -151,7 +151,7 @@ describe('The inactivityListener API', function() {
         })
     })
 
-    describe('lapse getter', function() {
+    describe('lapse getter', function () {
         test('lapse should return a numeric timelapse', () => {
             jest.useFakeTimers()
             inactivityListener.start(args.timeLimit, args.callback)
@@ -165,7 +165,7 @@ describe('The inactivityListener API', function() {
         })
     })
 
-    describe('destroy method', function() {
+    describe('destroy method', function () {
         test('destroy should clear all timeouts and remove all eventListeners', () => {
             const spyClearTimeout = jest.spyOn(window, 'clearTimeout')
             const spyEventListener = jest.spyOn(window, 'removeEventListener')
