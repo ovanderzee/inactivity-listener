@@ -1,6 +1,6 @@
 {
   "name": "inactivity-listener",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Do something when a timespan of no interaction passes",
   "main": "dist/inactivityListener.js",
   "module": "module/inactivityListener.js",
