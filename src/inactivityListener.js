@@ -105,14 +105,16 @@ const inactivityListener = (function () {
     }
 
     /**
-     * Find the id's, even when the box was changed
+     * Bring in variables, start listeners and timer.
      * @param {Number} waitTime - time in milliseconds
      * @param {Function} action - callback
      */
     const start = function (waitTime, action) {
         timeLimit = waitTime
         callback = action
-        eventHandling('add')
+        if (state === 'void') {
+            eventHandling('add')
+        }
         watch()
     }
 
