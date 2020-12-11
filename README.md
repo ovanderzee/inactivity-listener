@@ -53,3 +53,7 @@ Remove listeners, clear timer:
 ```
 inactivityListener.destroy()
 ```
+
+## Demo
+
+.../inactivity-listener/demo/inactivityListener.html
