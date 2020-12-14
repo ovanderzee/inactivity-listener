@@ -22,10 +22,12 @@ describe('The inactivityListener API', function () {
         afterEach(() => inactivityListener.destroy())
 
         test('start should kick off everything', () => {
+            jest.useFakeTimers()
             const spyEventListener = jest.spyOn(window, 'addEventListener')
             const spySetTimeout = jest.spyOn(window, 'setTimeout')
 
             inactivityListener.start(args.timeLimit, args.callback)
+            jest.runAllTimers()
 
             expect(spyEventListener).toHaveBeenCalledTimes(eventTypeCount)
             expect(spySetTimeout).toHaveBeenCalledWith(
@@ -49,7 +51,6 @@ describe('The inactivityListener API', function () {
             const spyDelayedCallback = jest.spyOn(args, 'callback')
 
             inactivityListener.start(args.timeLimit, args.callback)
-
             jest.advanceTimersByTime(args.timeLimit * 0.9)
 
             expect(spyDelayedCallback).not.toHaveBeenCalled()
@@ -107,6 +108,7 @@ describe('The inactivityListener API', function () {
 
     describe('restart method', function () {
         // both start and restart call the timer
+        afterEach(() => inactivityListener.destroy())
 
         test('restart should work when timeout was completed', () => {
             jest.useFakeTimers()
@@ -123,13 +125,14 @@ describe('The inactivityListener API', function () {
         })
 
         test('restart should not work when timeout is running', () => {
-            jest.useRealTimers()
+            jest.useFakeTimers()
             const spySetTimeout = jest.spyOn(window, 'setTimeout')
 
             inactivityListener.start(args.timeLimit, args.callback)
 
             expect(spySetTimeout).toHaveBeenCalledTimes(1)
 
+            jest.advanceTimersByTime(args.timeLimit * 0.5)
             inactivityListener.restart()
 
             expect(spySetTimeout).toHaveBeenCalledTimes(1) // cumulated

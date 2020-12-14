@@ -50,6 +50,7 @@ const inactivityListener = (function () {
     const watch = function () {
         state = 'busy'
         timeRoot = new Date()
+        if (timeoutId !== undefined) stop()
         timeoutId = setTimeout(execute, timeLimit)
     }
 
@@ -59,6 +60,7 @@ const inactivityListener = (function () {
      */
     const stop = function () {
         clearTimeout(timeoutId)
+        timeoutId = undefined
     }
 
     /**
