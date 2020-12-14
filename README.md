@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/ovanderzee/inactivity-listener.svg?branch=master)](https://travis-ci.com/ovanderzee/inactivity-listener)
-[![Coverage Status](https://coveralls.io/repos/github/ovanderzee/inactivity-listener/badge.svg?branch=master)](https://coveralls.io/github/ovanderzee/inactivity-listener?branch=master)
+[![Build Status](https://travis-ci.org/ovanderzee/inactivity-listener.svg?branch=main)](https://travis-ci.com/ovanderzee/inactivity-listener)
+[![Coverage Status](https://coveralls.io/repos/github/ovanderzee/inactivity-listener/badge.svg?branch=main)](https://coveralls.io/github/ovanderzee/inactivity-listener?branch=main)
 
 # Inactivity Listener
 
