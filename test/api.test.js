@@ -60,21 +60,6 @@ describe('The inactivityListener API', function () {
 
             jest.advanceTimersByTime(args.timeLimit * 0.2)
         })
-
-        test('start should error on a faulty callback', () => {
-            args.faultyCallback = function () {
-                throw 'An error should be thrown!'
-            }
-            jest.useFakeTimers()
-            const spyFaultyCallback = jest.spyOn(args, 'faultyCallback')
-            const spyConsoleError = jest.spyOn(console, 'error')
-
-            inactivityListener.start(args.timeLimit, args.faultyCallback)
-            jest.runAllTimers()
-
-            expect(spyFaultyCallback).toHaveBeenCalledTimes(1)
-            expect(spyConsoleError).toHaveBeenCalledTimes(1)
-        })
     })
 
     describe('reset method', function () {

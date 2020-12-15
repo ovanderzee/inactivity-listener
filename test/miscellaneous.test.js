@@ -1,6 +1,6 @@
 import { inactivityListener } from '../src/inactivityListener'
 
-describe('Prevent memoryleaks', function () {
+describe('Miscellaneous highlights', function () {
     let args
     let eventTypeCount = 8
     let timeoutCount = 1
@@ -19,7 +19,9 @@ describe('Prevent memoryleaks', function () {
         jest.restoreAllMocks()
     })
 
-    describe('the start function', function () {
+    describe('To prevent memoryleaks it', function () {
+        afterEach(() => inactivityListener.destroy())
+
         test('should not add duplicate eventListeners or timeouts', () => {
             jest.useFakeTimers()
             const spyEventListener = jest.spyOn(window, 'addEventListener')
@@ -43,6 +45,39 @@ describe('Prevent memoryleaks', function () {
             expect(spyClearTimeout).toHaveBeenCalledTimes(timeoutCount)
 
             jest.runAllTimers()
+        })
+    })
+
+    describe('A faulty callback', function () {
+        beforeAll(() => {
+            args.faultyCallback = function () {
+                throw 'An error should be thrown!'
+            }
+        })
+        afterEach(() => inactivityListener.destroy())
+
+        test('should not produce an error', () => {
+            jest.useRealTimers()
+            args.faultyCallback = function () {
+                throw 'An error should be thrown!'
+            }
+
+            expect(args.faultyCallback).toThrow()
+            expect(function () {
+                inactivityListener.start(args.timeLimit, args.faultyCallback)
+            }).not.toThrow()
+        })
+
+        test('should produce an error message in the console', () => {
+            jest.useFakeTimers()
+            const spyFaultyCallback = jest.spyOn(args, 'faultyCallback')
+            const spyConsoleError = jest.spyOn(console, 'error')
+
+            inactivityListener.start(args.timeLimit, args.faultyCallback)
+            jest.runAllTimers()
+
+            expect(spyFaultyCallback).toHaveBeenCalledTimes(1)
+            expect(spyConsoleError).toHaveBeenCalledTimes(1)
         })
     })
 })
