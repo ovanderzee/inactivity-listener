@@ -20,7 +20,7 @@ describe('Miscellaneous highlights', function () {
     })
 
     describe('To prevent memoryleaks it', function () {
-        afterEach(() => inactivityListener.destroy())
+        afterEach(() => inactivityListener.stop())
 
         test('should not add duplicate eventListeners or timeouts', () => {
             jest.useFakeTimers()
@@ -54,7 +54,7 @@ describe('Miscellaneous highlights', function () {
                 throw 'An error should be thrown!'
             }
         })
-        afterEach(() => inactivityListener.destroy())
+        afterEach(() => inactivityListener.stop())
 
         test('should not produce an error', () => {
             jest.useRealTimers()

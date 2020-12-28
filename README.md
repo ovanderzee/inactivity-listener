@@ -8,13 +8,14 @@ Straightforward;
 It sets a timeout that can be reset by internal eventListeners -
 or through the public API.
 When time passes your callback is executed.
-A subsequent timeout can be set manually.
-The total inactive time can be obtained.
 
 ## Features
 
 * No permission needed unlike in Chrome's IdleDetector.
 * EventListeners deal with common stopPropagation uses.
+* After timeout, a next timeout with the same parameters can be set.
+* Time passed since last activity available before and after timeout,
+until a (re)start.
 
 ## Install
 
@@ -24,9 +25,14 @@ and an es-module in the module folder to import.
 
 ## Usage
 
-Start watching. Interval in milliseconds:
+Start watching activity, waiting for inactivity.
 
 ```
+let interval = 120000 // 20 minutes
+let callback = function () {
+    toDoWhenInactive()
+    inactivityListener.restart()
+}
 inactivityListener.start(interval, callback)
 ```
 
@@ -51,7 +57,7 @@ inactivityListener.restart()
 Remove listeners, clear timer:
 
 ```
-inactivityListener.destroy()
+inactivityListener.stop()
 ```
 
 ## Demo

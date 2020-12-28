@@ -22,7 +22,7 @@ describe('The inactivityListener API', function () {
     })
 
     describe('start method', function () {
-        afterEach(() => inactivityListener.destroy())
+        afterEach(() => inactivityListener.stop())
 
         test('start should kick off everything', () => {
             jest.useFakeTimers()
@@ -64,7 +64,7 @@ describe('The inactivityListener API', function () {
 
     describe('reset method', function () {
         // both start and reset call the timer, reset also clears the timer
-        afterEach(() => inactivityListener.destroy())
+        afterEach(() => inactivityListener.stop())
 
         test('reset should work after starting', () => {
             jest.useRealTimers()
@@ -111,7 +111,7 @@ describe('The inactivityListener API', function () {
 
     describe('restart method', function () {
         // both start and restart call the timer
-        afterEach(() => inactivityListener.destroy())
+        afterEach(() => inactivityListener.stop())
 
         test('restart should work when timeout was completed', () => {
             jest.useFakeTimers()
@@ -173,7 +173,7 @@ describe('The inactivityListener API', function () {
 
             expect(spyClearTimeout).not.toHaveBeenCalled()
 
-            inactivityListener.destroy()
+            inactivityListener.stop()
 
             expect(spyClearTimeout).toHaveBeenCalledTimes(1)
             expect(spyEventListener).toHaveBeenCalledTimes(eventTypeCount)

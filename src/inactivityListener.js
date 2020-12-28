@@ -1,13 +1,13 @@
 const inactivityListener = (function () {
-    // time until callback is executed - Number in milliseconds
+    // configurable time until callback is executed - Number in milliseconds
     let timeLimit
-    // to execute after timeLimit passed - Function
+    // configurable function to execute after timeLimit passed - Function
     let callback
     // generated id for inactivity span - Number
     let timeoutId
-    // timestamp of start or last activity - Date object
+    // generated timestamp for start or last activity - Date object
     let timeRoot
-    // to what events to listen - String[]
+    // internal events to listen to - String[]
     let eventTypes = [
         'keydown',
         'keyup', // to be sure
@@ -18,7 +18,7 @@ const inactivityListener = (function () {
         'scroll',
         'wheel',
     ]
-    // void, busy, lapse
+    // internal state; one of 'void', 'busy' or 'lapse' - String
     let state = 'void'
 
     /**
@@ -50,7 +50,7 @@ const inactivityListener = (function () {
     const watch = function () {
         state = 'busy'
         timeRoot = new Date()
-        if (timeoutId !== undefined) stop()
+        if (timeoutId !== undefined) ignore()
         timeoutId = setTimeout(execute, timeLimit)
     }
 
@@ -58,7 +58,7 @@ const inactivityListener = (function () {
      * Terminate the timeout
      * @private
      */
-    const stop = function () {
+    const ignore = function () {
         clearTimeout(timeoutId)
         timeoutId = undefined
     }
@@ -71,7 +71,7 @@ const inactivityListener = (function () {
     const reset = function () {
         // only when timeout is set
         if (state !== 'busy') return
-        stop()
+        ignore()
         watch()
     }
 
@@ -121,11 +121,11 @@ const inactivityListener = (function () {
     }
 
     /**
-     * Cleanup for singe page apps
+     * Cleanup for single page apps
      */
-    const destroy = function () {
+    const stop = function () {
         state = 'void'
-        stop()
+        ignore()
         eventHandling('remove')
     }
 
@@ -136,7 +136,8 @@ const inactivityListener = (function () {
             return elapsed()
         },
         restart: restart,
-        destroy: destroy,
+        stop: stop,
+        destroy: stop, // depricate
     }
 })()
 
