@@ -8,7 +8,9 @@ const inactivityListener = (function () {
     // generated timestamp for start or last activity - Date object
     let timeRoot
     // internal events to listen to - String[]
-    let eventTypes = [
+    let eventTypes
+    // default events to listen to - String[]
+    let standardEventTypes = [
         'keydown',
         'keyup', // to be sure
         'mousemove',
@@ -93,27 +95,39 @@ const inactivityListener = (function () {
     const eventHandling = function (aim) {
         // event options
         const eventOptions = { passive: true, capture: true }
+        let count = 0
 
         eventTypes.forEach(function (type) {
             const handler = `on${type}`
             if (handler in window) {
                 window[aim + 'EventListener'](type, reset, eventOptions)
+                count++
             } else if (handler in document) {
                 document[aim + 'EventListener'](type, reset, eventOptions)
-            } else {
-                console.error(`inactivityListener rejected ${type} event`)
+                count++
+            } else if (aim === 'add') {
+                console.warn(`inactivityListener rejected ${type}-event`)
             }
         })
+
+        if (!count && aim === 'add') {
+            console.warn(`inactivityListener resets only on coded calls!`)
+        }
     }
 
     /**
      * Bring in variables, start listeners and timer.
      * @param {Number} waitTime - time in milliseconds
      * @param {Function} action - callback
+     * @param {String[]} eventNames - new list of events to watch
      */
-    const start = function (waitTime, action) {
+    const start = function (waitTime, action, eventNames) {
         timeLimit = waitTime
         callback = action
+        eventTypes = standardEventTypes
+        if (Array.isArray(eventNames) && eventNames.length) {
+            eventTypes = eventNames.join().toLowerCase().split(',')
+        }
         if (state === 'void') {
             eventHandling('add')
         }

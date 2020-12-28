@@ -54,6 +54,7 @@ describe('Miscellaneous highlights', function () {
                 throw 'An error should be thrown!'
             }
         })
+
         afterEach(() => inactivityListener.stop())
 
         test('should not produce an error', () => {
@@ -78,6 +79,66 @@ describe('Miscellaneous highlights', function () {
 
             expect(spyFaultyCallback).toHaveBeenCalledTimes(1)
             expect(spyConsoleError).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('Configurable events to listen to', function () {
+        test('should be known in the window or document', () => {
+            const spyAddition = jest.spyOn(window, 'addEventListener')
+            const spyRemoval = jest.spyOn(window, 'removeEventListener')
+            const spyConsoleWarn = jest.spyOn(console, 'warn')
+            const realEvents = ['click', 'scroll']
+
+            inactivityListener.start(args.timeLimit, args.callback, realEvents)
+
+            expect(spyAddition).toHaveBeenCalledTimes(2)
+            expect(spyConsoleWarn).toHaveBeenCalledTimes(0)
+
+            inactivityListener.stop()
+
+            expect(spyRemoval).toHaveBeenCalledTimes(2)
+        })
+
+        test('should show a console.warn when an event is unknown', () => {
+            const spyAddition = jest.spyOn(window, 'addEventListener')
+            const spyRemoval = jest.spyOn(window, 'removeEventListener')
+            const spyConsoleWarn = jest.spyOn(console, 'warn')
+            const mixedEvents = ['unknown', 'click']
+
+            inactivityListener.start(args.timeLimit, args.callback, mixedEvents)
+
+            expect(spyAddition).toHaveBeenCalledTimes(1)
+            expect(spyConsoleWarn).toHaveBeenCalledWith(
+                `inactivityListener rejected unknown-event`,
+            )
+
+            inactivityListener.stop()
+
+            expect(spyRemoval).toHaveBeenCalledTimes(1)
+        })
+
+        test(`should show a console.warn when no useable events are passed`, () => {
+            const spyAddition = jest.spyOn(window, 'addEventListener')
+            const spyRemoval = jest.spyOn(window, 'removeEventListener')
+            const spyConsoleWarn = jest.spyOn(console, 'warn')
+            const noEvents = ['unknown', 'useless']
+
+            inactivityListener.start(args.timeLimit, args.callback, noEvents)
+
+            expect(spyAddition).toHaveBeenCalledTimes(0)
+            expect(spyConsoleWarn).toHaveBeenCalledWith(
+                `inactivityListener rejected unknown-event`,
+            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(
+                `inactivityListener rejected useless-event`,
+            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(
+                `inactivityListener resets only on coded calls!`,
+            )
+
+            inactivityListener.stop()
+
+            expect(spyRemoval).toHaveBeenCalledTimes(0)
         })
     })
 })

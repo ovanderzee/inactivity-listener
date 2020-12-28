@@ -16,6 +16,7 @@ When time passes your callback is executed.
 * After timeout, a next timeout with the same parameters can be set.
 * Time passed since last activity available before and after timeout,
 until a (re)start.
+* Event types causing a reset are configurable.
 
 ## Install
 
@@ -26,14 +27,17 @@ and an es-module in the module folder to import.
 ## Usage
 
 Start watching activity, waiting for inactivity.
+optional replace standard events to watch:
 
 ```
 let interval = 120000 // 20 minutes
 let callback = function () {
-    toDoWhenInactive()
-    inactivityListener.restart()
+    if (window.alert('Ready to resume?')) {
+        inactivityListener.restart()
+    }
 }
-inactivityListener.start(interval, callback)
+let events = ['touchstart', 'pointerdown']
+inactivityListener.start(interval, callback[, events])
 ```
 
 Reset timer when ticking:
