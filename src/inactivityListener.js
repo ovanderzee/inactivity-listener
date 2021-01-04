@@ -41,7 +41,7 @@ const inactivityListener = (function () {
         try {
             callback()
         } catch (error) {
-            console.error('faulty callback')
+            console.error('inactivityListener caught faulty callback')
         }
     }
 
