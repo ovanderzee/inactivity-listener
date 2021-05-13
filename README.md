@@ -29,7 +29,7 @@ and an es-module in the module folder to import.
 Start watching activity, waiting for inactivity.
 optional replace standard events to watch:
 
-```
+```js
 let interval = 120000 // 20 minutes
 let callback = function () {
     if (window.alert('Ready to resume?')) {
@@ -42,25 +42,25 @@ inactivityListener.start(interval, callback[, events])
 
 Reset timer when ticking:
 
-```
+```js
 inactivityListener.reset()
 ```
 
 Report inactivity, in milliseconds:
 
-```
+```js
 let inactiveTime = inactivityListener.lapse
 ```
 
 Resume listening after timeout:
 
-```
+```js
 inactivityListener.restart()
 ```
 
 Remove listeners, clear timer:
 
-```
+```js
 inactivityListener.stop()
 ```
 
