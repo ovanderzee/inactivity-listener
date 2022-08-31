@@ -17,6 +17,7 @@ When time passes your callback is executed.
 * Time passed since last activity available before and after timeout,
 until a (re)start.
 * Event types causing a reset are configurable.
+* Typescript
 
 ## Install
 
