@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ovanderzee/inactivity-listener.svg?branch=main)](https://travis-ci.com/ovanderzee/inactivity-listener)
+[![CircleCI](https://circleci.com/gh/ovanderzee/inactivity-listener/tree/main.svg?style=svg)](https://circleci.com/gh/ovanderzee/inactivity-listener/?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/ovanderzee/inactivity-listener/badge.svg?branch=main)](https://coveralls.io/github/ovanderzee/inactivity-listener?branch=main)
 
 # Inactivity Listener
