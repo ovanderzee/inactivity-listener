@@ -33,10 +33,7 @@ describe('The inactivityListener API', function () {
             jest.runAllTimers()
 
             expect(spyEventListener).toHaveBeenCalledTimes(eventTypeCount)
-            expect(spySetTimeout).toHaveBeenCalledWith(
-                expect.any(Function),
-                args.timeLimit,
-            )
+            expect(spySetTimeout).toHaveBeenCalledWith(expect.any(Function), args.timeLimit)
         })
 
         test('start should call back when the timeLimit was reached', () => {
@@ -153,7 +150,9 @@ describe('The inactivityListener API', function () {
 
     describe('lapse getter', function () {
         test('lapse should return a numeric timelapse', () => {
-            jest.useFakeTimers()
+            jest.useFakeTimers({
+                legacyFakeTimers: true,
+            })
             inactivityListener.start(args.timeLimit, args.callback)
             jest.runAllTimers()
 

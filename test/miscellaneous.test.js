@@ -108,9 +108,7 @@ describe('Miscellaneous highlights', function () {
             inactivityListener.start(args.timeLimit, args.callback, mixedEvents)
 
             expect(spyAddition).toHaveBeenCalledTimes(1)
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener rejected unknown-event`,
-            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener rejected unknown-event`)
 
             inactivityListener.stop()
 
@@ -126,15 +124,9 @@ describe('Miscellaneous highlights', function () {
             inactivityListener.start(args.timeLimit, args.callback, noEvents)
 
             expect(spyAddition).toHaveBeenCalledTimes(0)
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener rejected unknown-event`,
-            )
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener rejected useless-event`,
-            )
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener resets only on coded calls!`,
-            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener rejected unknown-event`)
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener rejected useless-event`)
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener resets only on coded calls!`)
 
             inactivityListener.stop()
 
