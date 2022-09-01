@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        /* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+        /* Basic Options */
+        "target": "ES6",
+        "module": "ES6",
+        "allowJs": true,
+        "outDir": "./temp",
+        "isolatedModules": true,
+
+        /* Strict Type-Checking Options */
+        "strict": true,
+
+        /* Module Resolution Options */
+        "moduleResolution": "node",
+        "types": ["node", "jest"],
+        "esModuleInterop": true,
+
+        /* Advanced Options */
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+    }
+}
+

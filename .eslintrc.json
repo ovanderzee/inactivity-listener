@@ -6,18 +6,28 @@
     "jest/globals": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:jasmine/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jasmine/recommended",
+    "plugin:prettier/recommended"
   ],
+  "globals": {
+    "OpenSeadragon": true
+  },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "plugins": [
+    "@typescript-eslint",
     "jasmine",
     "jest"
   ],
   "rules": {
+    "no-control-regex": "warn",
+    "no-empty": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "no-extra-semi": "warn",
     "no-unused-vars": ["warn"]
   }
 }

@@ -33,7 +33,10 @@ describe('The inactivityListener API', function () {
             jest.runAllTimers()
 
             expect(spyEventListener).toHaveBeenCalledTimes(eventTypeCount)
-            expect(spySetTimeout).toHaveBeenCalledWith(expect.any(Function), args.timeLimit)
+            expect(spySetTimeout).toHaveBeenCalledWith(
+                expect.any(Function),
+                args.timeLimit,
+            )
         })
 
         test('start should call back when the timeLimit was reached', () => {
