@@ -1,16 +1,16 @@
 const inactivityListener = (function () {
     // configurable time until callback is executed - Number in milliseconds
-    let timeLimit
+    let timeLimit: number
     // configurable function to execute after timeLimit passed - Function
-    let callback
+    let callback: Function
     // generated id for inactivity span - Number
-    let timeoutId
+    let timeoutId: number
     // generated timestamp for start or last activity - Date object
-    let timeRoot
+    let timeRoot: Date
     // internal events to listen to - String[]
-    let eventTypes
+    let eventTypes: string[]
     // default events to listen to - String[]
-    let standardEventTypes = [
+    let standardEventTypes: string[] = [
         'keydown',
         'keyup', // to be sure
         'mousemove',
@@ -21,27 +21,27 @@ const inactivityListener = (function () {
         'wheel',
     ]
     // internal state; one of 'void', 'busy' or 'lapse' - String
-    let state = 'void'
+    let state: string = 'void'
 
     /**
      * Calculate lapsed timeout
      * @return {Number} milliseconds after start
      */
-    const elapsed = function () {
-        const past = new Date() - timeRoot
-        return past
+    const elapsed = function (): number {
+        const passed = new Date() - timeRoot
+        return passed
     }
 
     /**
      * Execute callback when time is up
      * @private
      */
-    const execute = function () {
+    const execute = function (): void {
         state = 'lapse'
         try {
             callback()
         } catch (error) {
-            console.error('inactivityListener caught faulty callback')
+            console.error('inactivityListener executed a erroneous callback')
         }
     }
 
@@ -49,7 +49,7 @@ const inactivityListener = (function () {
      * Put up a new round of waiting
      * @private
      */
-    const watch = function () {
+    const watch = function (): void {
         state = 'busy'
         timeRoot = new Date()
         if (timeoutId !== undefined) ignore()
@@ -60,7 +60,7 @@ const inactivityListener = (function () {
      * Terminate the timeout
      * @private
      */
-    const ignore = function () {
+    const ignore = function (): void {
         clearTimeout(timeoutId)
         timeoutId = undefined
     }
@@ -70,7 +70,7 @@ const inactivityListener = (function () {
      * and start waiting again.
      * Works when the timeout is set
      */
-    const reset = function () {
+    const reset = function (): void {
         // only when timeout is set
         if (state !== 'busy') return
         ignore()
@@ -81,7 +81,7 @@ const inactivityListener = (function () {
      * Start waiting with same timelimit and callback
      * Works when the timeout is completed
      */
-    const restart = function () {
+    const restart = function (): void {
         // not when untouched or timing
         if (state !== 'lapse') return
         watch()
@@ -92,12 +92,12 @@ const inactivityListener = (function () {
      * @private
      * @param {String} aim - 'add' | 'remove'
      */
-    const eventHandling = function (aim) {
+    const eventHandling = function (aim: string): void {
         // event options
         const eventOptions = { passive: true, capture: true }
         let count = 0
 
-        eventTypes.forEach(function (type) {
+        eventTypes.forEach(function (type: string): void {
             const handler = `on${type}`
             if (handler in window) {
                 window[aim + 'EventListener'](type, reset, eventOptions)
@@ -121,7 +121,7 @@ const inactivityListener = (function () {
      * @param {Function} action - callback
      * @param {String[]} eventNames - new list of events to watch
      */
-    const start = function (waitTime, action, eventNames) {
+    const start = function (waitTime: number, action: Function, eventNames: string[]): void {
         timeLimit = waitTime
         callback = action
         eventTypes = standardEventTypes
@@ -137,7 +137,7 @@ const inactivityListener = (function () {
     /**
      * Cleanup for single page apps
      */
-    const stop = function () {
+    const stop = function (): void {
         state = 'void'
         ignore()
         eventHandling('remove')
@@ -151,7 +151,6 @@ const inactivityListener = (function () {
         },
         restart: restart,
         stop: stop,
-        destroy: stop, // depricate
     }
 })()
 
