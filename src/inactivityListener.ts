@@ -28,7 +28,8 @@ const inactivityListener = (function () {
      * @return {Number} milliseconds after start
      */
     const elapsed = function (): number {
-        const passed = new Date() - timeRoot
+        const now = new Date()
+        const passed = now.getTime() - timeRoot.getTime()
         return passed
     }
 
@@ -52,8 +53,8 @@ const inactivityListener = (function () {
     const watch = function (): void {
         state = 'busy'
         timeRoot = new Date()
-        if (timeoutId !== undefined) ignore()
-        timeoutId = setTimeout(execute, timeLimit)
+        if (!Number.isNaN(timeoutId)) ignore()
+        timeoutId = window.setTimeout(execute, timeLimit)
     }
 
     /**
@@ -62,7 +63,7 @@ const inactivityListener = (function () {
      */
     const ignore = function (): void {
         clearTimeout(timeoutId)
-        timeoutId = undefined
+        timeoutId = Number.NaN
     }
 
     /**
@@ -100,10 +101,13 @@ const inactivityListener = (function () {
         eventTypes.forEach(function (type: string): void {
             const handler = `on${type}`
             if (handler in window) {
-                window[aim + 'EventListener'](type, reset, eventOptions)
+                const binder = aim === 'add' ? window.addEventListener : window.removeEventListener
+                binder(type, reset, eventOptions)
                 count++
             } else if (handler in document) {
-                document[aim + 'EventListener'](type, reset, eventOptions)
+                const binder =
+                    aim === 'add' ? document.addEventListener : document.removeEventListener
+                binder(type, reset, eventOptions)
                 count++
             } else if (aim === 'add') {
                 console.warn(`inactivityListener rejected ${type}-event`)
