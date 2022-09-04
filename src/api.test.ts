@@ -1,11 +1,13 @@
-import { inactivityListener } from '../src/inactivityListener'
+import { inactivityListener } from './inactivityListener'
+import { StartArgs } from './types'
+import { standardEventTypes } from './constants'
 
 // suppress alarming messages in output and make call to function testable
 console.error = jest.fn()
 
 describe('The inactivityListener API', function () {
-    let args
-    let eventTypeCount = 8
+    let args: StartArgs
+    const eventTypeCount = standardEventTypes.length
 
     beforeAll(() => {
         args = {
@@ -33,10 +35,7 @@ describe('The inactivityListener API', function () {
             jest.runAllTimers()
 
             expect(spyEventListener).toHaveBeenCalledTimes(eventTypeCount)
-            expect(spySetTimeout).toHaveBeenCalledWith(
-                expect.any(Function),
-                args.timeLimit,
-            )
+            expect(spySetTimeout).toHaveBeenCalledWith(expect.any(Function), args.timeLimit)
         })
 
         test('start should call back when the timeLimit was reached', () => {

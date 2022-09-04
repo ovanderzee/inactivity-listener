@@ -1,27 +1,20 @@
+import { standardEventTypes } from './constants'
+
 const inactivityListener = (function () {
     // configurable time until callback is executed - Number in milliseconds
     let timeLimit: number
     // configurable function to execute after timeLimit passed - Function
-    let callback: Function
+    let callback: () => any
     // generated id for inactivity span - Number
-    let timeoutId: number
+    let timeoutId: number = Number.NaN
     // generated timestamp for start or last activity - Date object
     let timeRoot: Date
     // internal events to listen to - String[]
     let eventTypes: string[]
     // default events to listen to - String[]
-    let standardEventTypes: string[] = [
-        'keydown',
-        'keyup', // to be sure
-        'mousemove',
-        'mouseenter', // to be sure
-        'mousedown',
-        'mouseup', // to be sure
-        'scroll',
-        'wheel',
-    ]
+    // const standardEventTypes: string[] = [
     // internal state; one of 'void', 'busy' or 'lapse' - String
-    let state: string = 'void'
+    let state = 'void'
 
     /**
      * Calculate lapsed timeout
@@ -125,11 +118,11 @@ const inactivityListener = (function () {
      * @param {Function} action - callback
      * @param {String[]} eventNames - new list of events to watch
      */
-    const start = function (waitTime: number, action: Function, eventNames: string[]): void {
+    const start = function (waitTime: number, action: () => any, eventNames: string[] = []): void {
         timeLimit = waitTime
         callback = action
         eventTypes = standardEventTypes
-        if (Array.isArray(eventNames) && eventNames.length) {
+        if (eventNames.length) {
             eventTypes = eventNames.join().toLowerCase().split(',')
         }
         if (state === 'void') {

@@ -1,9 +1,11 @@
 import { inactivityListener } from '../src/inactivityListener'
+import { StartArgs } from './types'
+import { standardEventTypes } from '../src/constants'
 
 describe('Miscellaneous highlights', function () {
-    let args
-    let eventTypeCount = 8
-    let timeoutCount = 1
+    let args: StartArgs
+    const eventTypeCount = standardEventTypes.length
+    const timeoutCount = 1
 
     beforeAll(() => {
         args = {
@@ -23,7 +25,9 @@ describe('Miscellaneous highlights', function () {
         afterEach(() => inactivityListener.stop())
 
         test('should not add duplicate eventListeners or timeouts', () => {
-            jest.useFakeTimers()
+            jest.useFakeTimers({
+                legacyFakeTimers: true,
+            })
             const spyEventListener = jest.spyOn(window, 'addEventListener')
             const spySetTimeout = jest.spyOn(window, 'setTimeout')
             const spyClearTimeout = jest.spyOn(window, 'clearTimeout')
@@ -50,7 +54,7 @@ describe('Miscellaneous highlights', function () {
 
     describe('A faulty callback', function () {
         beforeAll(() => {
-            args.faultyCallback = function () {
+            args.callback = function () {
                 throw 'An error should be thrown!'
             }
         })
@@ -59,22 +63,22 @@ describe('Miscellaneous highlights', function () {
 
         test('should not produce an error', () => {
             jest.useRealTimers()
-            args.faultyCallback = function () {
+            args.callback = function () {
                 throw 'An error should be thrown!'
             }
 
-            expect(args.faultyCallback).toThrow()
+            expect(args.callback).toThrow()
             expect(function () {
-                inactivityListener.start(args.timeLimit, args.faultyCallback)
+                inactivityListener.start(args.timeLimit, args.callback)
             }).not.toThrow()
         })
 
         test('should produce an error message in the console', () => {
             jest.useFakeTimers()
-            const spyFaultyCallback = jest.spyOn(args, 'faultyCallback')
+            const spyFaultyCallback = jest.spyOn(args, 'callback')
             const spyConsoleError = jest.spyOn(console, 'error')
 
-            inactivityListener.start(args.timeLimit, args.faultyCallback)
+            inactivityListener.start(args.timeLimit, args.callback)
             jest.runAllTimers()
 
             expect(spyFaultyCallback).toHaveBeenCalledTimes(1)
@@ -108,9 +112,7 @@ describe('Miscellaneous highlights', function () {
             inactivityListener.start(args.timeLimit, args.callback, mixedEvents)
 
             expect(spyAddition).toHaveBeenCalledTimes(1)
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener rejected unknown-event`,
-            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener rejected unknown-event`)
 
             inactivityListener.stop()
 
@@ -126,17 +128,11 @@ describe('Miscellaneous highlights', function () {
             inactivityListener.start(args.timeLimit, args.callback, noEvents)
 
             expect(spyAddition).toHaveBeenCalledTimes(0)
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener rejected unknown-event`,
-            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener rejected unknown-event`)
 
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener rejected useless-event`,
-            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener rejected useless-event`)
 
-            expect(spyConsoleWarn).toHaveBeenCalledWith(
-                `inactivityListener resets only on coded calls!`,
-            )
+            expect(spyConsoleWarn).toHaveBeenCalledWith(`inactivityListener resets only on coded calls!`)
 
             inactivityListener.stop()
 
