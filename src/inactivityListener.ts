@@ -4,6 +4,7 @@ const inactivityListener = (function () {
     // configurable time until callback is executed - Number in milliseconds
     let timeLimit: number
     // configurable function to execute after timeLimit passed - Function
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let callback: () => any
     // generated id for inactivity span - Number
     let timeoutId: number = Number.NaN
@@ -118,6 +119,7 @@ const inactivityListener = (function () {
      * @param {Function} action - callback
      * @param {String[]} eventNames - new list of events to watch
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const start = function (waitTime: number, action: () => any, eventNames: string[] = []): void {
         if (state !== 'void') return
         timeLimit = waitTime
