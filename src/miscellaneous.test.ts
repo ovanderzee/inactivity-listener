@@ -24,7 +24,7 @@ describe('Miscellaneous highlights', function () {
     describe('To prevent memoryleaks it', function () {
         afterEach(() => inactivityListener.stop())
 
-        test('should not add duplicate eventListeners or timeouts; start not effective when busy', () => {
+        test('should not add duplicate eventListeners or timeouts; start not effective when timing', () => {
             jest.useFakeTimers({
                 legacyFakeTimers: true,
             })

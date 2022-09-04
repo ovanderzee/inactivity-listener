@@ -14,11 +14,11 @@ const inactivityListener = (function () {
     let eventTypes: string[]
     // default events to listen to - String[]
     // const standardEventTypes: string[] = [
-    // internal state; one of 'void', 'busy' or 'lapse' - String
-    let state = 'void'
+    // internal state; one of 'UNSET', 'TIMING' or 'OVERTIME' - String
+    let state = 'UNSET'
 
     /**
-     * Calculate lapsed timeout
+     * Calculate time lapsed since setting timeout
      * @return {Number} milliseconds after start
      */
     const elapsed = function (): number {
@@ -32,7 +32,7 @@ const inactivityListener = (function () {
      * @private
      */
     const execute = function (): void {
-        state = 'lapse'
+        state = 'OVERTIME'
         try {
             callback()
         } catch (error) {
@@ -45,7 +45,7 @@ const inactivityListener = (function () {
      * @private
      */
     const watch = function (): void {
-        state = 'busy'
+        state = 'TIMING'
         timeRoot = new Date()
         if (!Number.isNaN(timeoutId)) ignore()
         timeoutId = window.setTimeout(execute, timeLimit)
@@ -67,7 +67,7 @@ const inactivityListener = (function () {
      */
     const reset = function (): void {
         // only when timeout is set
-        if (state !== 'busy') return
+        if (state !== 'TIMING') return
         ignore()
         watch()
     }
@@ -77,8 +77,8 @@ const inactivityListener = (function () {
      * Works when the timeout is completed
      */
     const restart = function (): void {
-        // not when untouched or timing
-        if (state !== 'lapse') return
+        // not when untouched or busy
+        if (state !== 'OVERTIME') return
         watch()
     }
 
@@ -121,7 +121,7 @@ const inactivityListener = (function () {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const start = function (waitTime: number, action: () => any, eventNames: string[] = []): void {
-        if (state !== 'void') return
+        if (state !== 'UNSET') return
         timeLimit = waitTime
         callback = action
         eventTypes = standardEventTypes
@@ -136,7 +136,7 @@ const inactivityListener = (function () {
      * Cleanup for single page apps
      */
     const stop = function (): void {
-        state = 'void'
+        state = 'UNSET'
         ignore()
         eventHandling('remove')
     }
