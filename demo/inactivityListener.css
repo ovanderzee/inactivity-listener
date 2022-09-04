@@ -1,0 +1,65 @@
+:root {
+    --disabled-color: #aaa;
+    --unset-color: #555;
+    --timing-color: #0aa;
+    --overtime-color: #aa0;
+}
+
+body {
+    background: white;
+    color: #555;
+    font: 15px/1 sans-serif;
+}
+
+fieldset {
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 4em;
+    box-sizing: border-box;
+    padding: 1em 2em 1em 5em;
+    position: relative;
+    min-height: calc(4em + 2px);
+    margin: 1em 0;
+    display: flex;
+    justify-content: space-between;
+}
+fieldset[disabled] {
+    color: var(--disabled-color) !important;
+}
+fieldset:before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 4em;
+    height: 4em;
+    background: currentColor;
+    border-radius: 4em;
+}
+
+legend {
+    position: absolute;
+    top: -0.75em;
+    background: white;
+    padding: 0.2em;
+}
+
+#unset {
+    color: var(--unset-color);
+    border-color: currentColor;
+}
+#timing {
+    color: var(--timing-color);
+    border-color: currentColor;
+}
+#overtime {
+    color: var(--overtime-color);
+    border-color: currentColor;
+}
+
+.content > * {
+  vertical-align: middle;
+}
+.control {
+    width: 7em;
+}

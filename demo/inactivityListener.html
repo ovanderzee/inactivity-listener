@@ -3,98 +3,65 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <script src="../dist/inactivityListener.js"></script>
+        <script src="inactivityListener.js"></script>
+        <link rel="stylesheet" href="inactivityListener.css" />
     </head>
     <body>
         <header>
-            <h1>Inactivity Listener</p>
+            <h1>Inactivity Listener</h1>
+            <h2>Timer: <span id="timer">0</span></h2>
         </header>
 
         <form>
-            <fieldset oninput="theLimit.value=timeLimit.value">
-                <legend>Demo with Start method. The callback displays the chosen text.</legend>
-                <input
-                    id="timeLimit"
-                    name="timeLimit"
-                    title="time limit in milliseconds"
-                    value="1000"
-                    step="2000"
-                    min="0"
-                    type="number"
-                />
-                <select name="logQuote">
-                    <option>Love means never having to say you're sorry.</option>
-                    <option>It was Beauty killed the Beast.</option>
-                    <option>I'm just one stomach flu away from my goal weight.</option>
-                    <option>Magic Mirror on the wall, who is the fairest one of all?</option>
-                    <option>Nobody's perfect.</option>
-                    <option>"You ain't heard nothin' yet!</option>
-                    <option>Gentlemen, you can't fight in here! This is the war room!</option>
-                    <option>I don't want to survive. I want to live.</option>
-                    <option>Hasta la vista, baby.</option>
-                    <option>Frankly, my dear, I don't give a damn.</option>
-                <select>
-
-                <button
-                    type="button"
-                    name="button1"
-                >Start</button>
-
-                <p>
-                    After pressing 'Start', the callback is executed with after
-                    <output id="theLimit" for="timeLimit"></output> milliseconds.
-                </p>
-                <p id="hint1" style="display: none">
-                    Delay showing text by playing with mouse, keyboard, touchpad, etc.
-                <p>
+            <fieldset id="unset">
+                <legend>State UNSET</legend>
+                <div class="content">
+                    <input
+                        id="waittime"
+                        type="range"
+                        min="100" step="100" max="10000"
+                    />
+                    <output
+                        for="waittime"
+                    ></output>
+                </div>
+                <div class="control">
+                    <button
+                        type="button"
+                        id="start"
+                    >Start</button>
+                </div>
             </fieldset>
-
-            <fieldset id="set2" style="display: none">
-                <legend>Now you know about the inactivity timer, but there is more...
-                  </legend>
-
-                <button
-                    type="button"
-                    name="button2"
-                >Respond and restart</button>
-
-                <p id="hint2" style="display: none"><p>
+            <fieldset id="timing">
+                <legend>State TIMING</legend>
+                <div class="content">
+                </div>
+                <div class="control">
+                    <button
+                        type="button"
+                        id="reset"
+                    >Reset</button>
+                    <button
+                        type="button"
+                        id="stop"
+                    >Stop</button>
+                </div>
             </fieldset>
-
+            <fieldset id="overtime">
+                <legend>State OVERTIME</legend>
+                <div class="content">
+                </div>
+                <div class="control">
+                    <button
+                        type="button"
+                        id="restart"
+                    >Restart</button>
+                    <button
+                        type="button"
+                        id="stop"
+                    >Stop</button>
+                </div>
+            </fieldset>
         </form>
-
-        <script>
-            let interval
-            const show = function (line) {
-                console.log(line)
-                document.title = line
-                document.querySelector('header h1').textContent = line
-                document.querySelector('#set2').style.display = ''
-            }
-            document.querySelector('[name=button1]').onclick = function () {
-                interval = Number(this.form.timeLimit.value)
-                const quote = this.form.logQuote.value
-                inactivityListener.start(interval, () => show(quote))
-                document.querySelector('#hint1').style.display = ''
-                document.querySelector('#set2').style.display = 'none'
-                document.querySelector('#hint2').textContent = ''
-            }
-            document.querySelector('[name=button2]').onclick = function () {
-                const inactivity = inactivityListener.lapse
-                const inactivitySecs = (inactivity / 1000).toFixed(1)
-                const hint2 = document.querySelector('#hint2')
-                hint2.style.display = ''
-                if (inactivity > interval) {
-                  inactivityListener.restart()
-                  hint2.textContent = `Responded ${inactivitySecs} seconds after clicking start. Restarting the timer!`
-                  show("And the time ticks again...")
-                } else {
-                  hint2.textContent = `Restart not applicable when timer runs`
-                }
-
-            }
-            document.querySelector('#theLimit').textContent = document.querySelector('#timeLimit').value
-
-        </script>
-
     </body>
 </html>
