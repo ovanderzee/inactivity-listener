@@ -24,7 +24,7 @@ describe('Miscellaneous highlights', function () {
     describe('To prevent memoryleaks it', function () {
         afterEach(() => inactivityListener.stop())
 
-        test('should not add duplicate eventListeners or timeouts', () => {
+        test('should not add duplicate eventListeners or timeouts; start not effective when busy', () => {
             jest.useFakeTimers({
                 legacyFakeTimers: true,
             })
@@ -44,9 +44,10 @@ describe('Miscellaneous highlights', function () {
 
             // no additional listeners
             expect(spyEventListener).toHaveBeenCalledTimes(eventTypeCount)
-            // a cleared and set timer
-            expect(spySetTimeout).toHaveBeenCalledTimes(timeoutCount * 2)
-            expect(spyClearTimeout).toHaveBeenCalledTimes(timeoutCount)
+            // no additional starts
+            expect(spySetTimeout).toHaveBeenCalledTimes(timeoutCount)
+            // no subsequent clearings
+            expect(spyClearTimeout).toHaveBeenCalledTimes(0)
 
             jest.runAllTimers()
         })

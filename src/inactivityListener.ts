@@ -119,15 +119,14 @@ const inactivityListener = (function () {
      * @param {String[]} eventNames - new list of events to watch
      */
     const start = function (waitTime: number, action: () => any, eventNames: string[] = []): void {
+        if (state !== 'void') return
         timeLimit = waitTime
         callback = action
         eventTypes = standardEventTypes
         if (eventNames.length) {
-            eventTypes = eventNames.join().toLowerCase().split(',')
+            eventTypes = eventNames.map((name) => name.toLowerCase())
         }
-        if (state === 'void') {
-            eventHandling('add')
-        }
+        eventHandling('add')
         watch()
     }
 
