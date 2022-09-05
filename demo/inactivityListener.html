@@ -14,17 +14,17 @@
 
         <form>
             <fieldset id="unset">
-                <legend>State UNSET</legend>
-                <div class="content">
+                <label class="content">
+                    <output
+                        for="waittime"
+                    ></output>
+                    before callback executes
                     <input
                         id="waittime"
                         type="range"
                         min="100" step="100" max="10000"
                     />
-                    <output
-                        for="waittime"
-                    ></output>
-                </div>
+                </label>
                 <div class="control">
                     <button
                         type="button"
@@ -33,8 +33,8 @@
                 </div>
             </fieldset>
             <fieldset id="timing">
-                <legend>State TIMING</legend>
                 <div class="content">
+                    Do something...
                 </div>
                 <div class="control">
                     <button
@@ -48,7 +48,6 @@
                 </div>
             </fieldset>
             <fieldset id="overtime">
-                <legend>State OVERTIME</legend>
                 <div class="content">
                 </div>
                 <div class="control">
@@ -63,5 +62,16 @@
                 </div>
             </fieldset>
         </form>
+        <section>
+            <p>
+The Inactivity Listener out of the box listens to a lot of events to check you activity.
+This demo gives you control over the Inactivity Listener API.
+            </p>
+            <p>
+Of course hovering and clicking around would normally reset the listener all the time.
+So, for this demo, only keyboard, wheel and scroll events are considered activity.
+            </p>
+
+        </section>
     </body>
 </html>
