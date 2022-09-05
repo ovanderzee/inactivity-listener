@@ -31,7 +31,6 @@ fieldset[disabled] {
 
 input,
 button {
-    font: caption;
     line-height: 1;
     vertical-align: middle !important;
 }
@@ -107,4 +106,5 @@ fieldset:not([disabled]) button:hover {
 
 section {
     line-height: 1.333;
+    padding: 0 1ex;
 }
