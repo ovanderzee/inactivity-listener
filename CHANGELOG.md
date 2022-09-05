@@ -9,8 +9,9 @@ Introduce typescript
 - Changelog
 
 ### Changed
-- Clearer state names
+- Clearer function and state names
 - Cooler demo
+- Customizable event-watch list
 
 ### Fixed
 - Confine using start method to unset state
